@@ -67,8 +67,7 @@ exports.callback = async function(req, res, next) {
         res.status(200).send('success');
         const data = JSON.parse(req.body.payload)
 
-        axios.post(`${data.response_url}`, {
-            "replace_original": true,
+        const response = await axios.post(`${data.response_url}`, {
             "response_type": "ephemeral",
             "blocks": [
                 {
@@ -120,13 +119,8 @@ exports.callback = async function(req, res, next) {
                     }
                 }
             ]
-        })
-          .then( (response) => {
-            console.log(response.data);
-          })
-          .catch ((error) => {
-            console.log(error);
-          });
+        });
+        console.log(response)
     } catch (e) {
         next(e)
     }
