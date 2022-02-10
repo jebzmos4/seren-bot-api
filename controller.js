@@ -1,3 +1,5 @@
+const axios = require('axios').default;
+
 exports.health = async function(req, res, next) {
     try {
         res.status(200).json({ success: true, message: 'Welcome to the Slack bot controller' });
@@ -8,7 +10,6 @@ exports.health = async function(req, res, next) {
 
 exports.messages = async function(req, res, next) {
     try {
-        console.log("====>came here for messages===>")
             res.status(200).json({
             "blocks": [
                 {
@@ -63,67 +64,10 @@ exports.messages = async function(req, res, next) {
 exports.callback = async function(req, res, next) {
     try {
         console.log(req.body)
-        res.status(200).json({
-            "blocks": [
-                {
-                    "replace_original": "true",
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "What are your favorite hobbies?"
-                    },
-                    "accessory": {
-                        "type": "checkboxes",
-                        "options": [
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Football"
-                                },
-                                "value": "value-0"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Music"
-                                },
-                                "value": "value-1"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Movies"
-                                },
-                                "value": "value-2"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Sleep"
-                                },
-                                "value": "value-2"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Basketball"
-                                },
-                                "value": "value-2"
-                            }
-                        ],
-                        "action_id": "checkboxes-action"
-                    }
-                }
-            ]
-        });
-    } catch (e) {
-        next(e)
-    }
-}
+        res.status(200).send('success');
+        const data = JSON.parse(req.body.payload)
 
-exports.interact = async function(req, res, next) {
-    try {
-        res.status(200).json({
+        axios.post(`${data.response_url}`, {
             "blocks": [
                 {
                     "replace_original": "true",
@@ -175,7 +119,13 @@ exports.interact = async function(req, res, next) {
                     }
                 }
             ]
-        });
+        })
+          .then( (response) => {
+            console.log(response);
+          })
+          .catch ((error) => {
+            console.log(error);
+          });
     } catch (e) {
         next(e)
     }
