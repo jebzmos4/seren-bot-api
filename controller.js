@@ -148,10 +148,7 @@ async function saveQuestionOne(data) {
     });
 }
 
-async function saveQuestionTwo(payload) {
-    const data = JSON.parse(payload)
-    console.log(data)
-    const data = payload
+async function saveQuestionTwo(data) {
     
     const record = {
         user_id: data.user.id,
