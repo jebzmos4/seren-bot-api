@@ -42,8 +42,7 @@ class UserRepository {
 
   async getAll(skip = 0, limit = 20) {
     try {
-      return await this.connection
-        .findWithDeleted()
+      return await this.connection.find()
         .sort({ createdAt: -1 })
         .skip(parseInt(skip))
         .limit(parseInt(limit));

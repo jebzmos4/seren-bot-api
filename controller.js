@@ -80,6 +80,15 @@ exports.callback = async function(req, res, next) {
     }
 }
 
+exports.fetchResponses = async function(req, res, next) {
+    try {
+        const data = await UserRepository.getAll();
+        res.status(200).json(data);
+    } catch (e) {
+        next(e)
+    }
+}
+
 async function saveQuestionOne(data) {
 
     const record = {
