@@ -8,6 +8,7 @@ exports.health = async function(req, res, next) {
 
 exports.messages = async function(req, res, next) {
     try {
+        console.log("====>came here for messages===>")
             res.status(200).json({
             "blocks": [
                 {
