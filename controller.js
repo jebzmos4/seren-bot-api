@@ -62,7 +62,7 @@ exports.messages = async function(req, res, next) {
 exports.callback = async function(req, res, next) {
     try {
         console.log(req.body)
-        res.status(200)
+        res.status(200).send('Got here callback')
     } catch (e) {
         next(e)
     }
