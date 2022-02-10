@@ -70,7 +70,6 @@ exports.callback = async function(req, res, next) {
         axios.post(`${data.response_url}`, {
             "blocks": [
                 {
-                    "replace_original": "true",
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
@@ -121,7 +120,7 @@ exports.callback = async function(req, res, next) {
             ]
         })
           .then( (response) => {
-            console.log(response);
+            console.log(response.data);
           })
           .catch ((error) => {
             console.log(error);
