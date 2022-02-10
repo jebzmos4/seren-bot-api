@@ -8,7 +8,8 @@ exports.health = async function(req, res, next) {
 
 exports.messages = async function(req, res, next) {
     try {
-        res.status(200).json({ success: true, message: 'This is the messages endpoint' });
+        console.log("===>", req.body)
+        res.status(200).send('Welcome. How are you doing?');
     } catch (e) {
         next(e)
     }
