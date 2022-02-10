@@ -68,6 +68,8 @@ exports.callback = async function(req, res, next) {
         const data = JSON.parse(req.body.payload)
 
         axios.post(`${data.response_url}`, {
+            "replace_original": true,
+            "response_type": "ephemeral",
             "blocks": [
                 {
                     "type": "section",
