@@ -8,7 +8,7 @@ exports.health = async function(req, res, next) {
 
 exports.messages = async function(req, res, next) {
     try {
-        res.status(200).json({
+            res.status(200).json({
             "blocks": [
                 {
                     "type": "section",
@@ -62,6 +62,14 @@ exports.messages = async function(req, res, next) {
 exports.callback = async function(req, res, next) {
     try {
         console.log(req.body)
+        res.status(200)
+    } catch (e) {
+        next(e)
+    }
+}
+
+exports.interact = async function(req, res, next) {
+    try {
         res.status(200).json({
             "blocks": [
                 {
