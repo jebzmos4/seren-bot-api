@@ -154,7 +154,7 @@ async function saveQuestionTwo(data) {
         user_id: data.user.id,
         username: data.user.username,
         question: 'What are your favorite hobbies?',
-        answer: data.actions[0].text.text
+        answer: data.actions[0].selected_options[0].text.text
     }
     console.log(record)
     
