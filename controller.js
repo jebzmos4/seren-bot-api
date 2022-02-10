@@ -8,11 +8,10 @@ exports.health = async function(req, res, next) {
 
 exports.messages = async function(req, res, next) {
     try {
-        console.log("===>", req.body)
         res.status(200).json({
             "blocks": [
                 {
-                    "type": "header",
+                    "type": "section",
                     "text": {
                         "type": "plain_text",
                         "text": "Welcome. How are you doing?",
@@ -62,7 +61,59 @@ exports.messages = async function(req, res, next) {
 
 exports.callback = async function(req, res, next) {
     try {
-        res.status(200).json({ success: true, message: 'This is the callback endpoint' });
+        console.log(req.body)
+        res.status(200).json({
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "What are your favorite hobbies?"
+                    },
+                    "accessory": {
+                        "type": "checkboxes",
+                        "options": [
+                            {
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Football"
+                                },
+                                "value": "value-0"
+                            },
+                            {
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Music"
+                                },
+                                "value": "value-1"
+                            },
+                            {
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Movies"
+                                },
+                                "value": "value-2"
+                            },
+                            {
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Sleep"
+                                },
+                                "value": "value-2"
+                            },
+                            {
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "Basketball"
+                                },
+                                "value": "value-2"
+                            }
+                        ],
+                        "action_id": "checkboxes-action"
+                    }
+                }
+            ]
+        });
     } catch (e) {
         next(e)
     }
