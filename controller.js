@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 
+const UserRepository = new (require('./repository'))();
+
 exports.health = async function(req, res, next) {
     try {
         res.status(200).json({ success: true, message: 'Welcome to the Slack bot controller' });
@@ -64,64 +66,100 @@ exports.messages = async function(req, res, next) {
 exports.callback = async function(req, res, next) {
     try {
         console.log(req.body)
-        res.status(200).send('success');
-        const data = JSON.parse(req.body.payload)
-
-        const response = await axios.post(`${data.response_url}`, {
-            "response_type": "ephemeral",
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "What are your favorite hobbies?"
-                    },
-                    "accessory": {
-                        "type": "checkboxes",
-                        "options": [
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Football"
-                                },
-                                "value": "value-0"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Music"
-                                },
-                                "value": "value-1"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Movies"
-                                },
-                                "value": "value-2"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Sleep"
-                                },
-                                "value": "value-2"
-                            },
-                            {
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "Basketball"
-                                },
-                                "value": "value-2"
-                            }
-                        ],
-                        "action_id": "checkboxes-action"
-                    }
-                }
-            ]
-        });
-        console.log(response)
+        if (req.body.payload) {
+            res.sendStatus(200);
+            await saveQuestionOne(req.body.payload)
+        } else {
+            res.status(200).send('Thank You!');
+            await saveQuestionTwo(req.body.data)
+        }
     } catch (e) {
         next(e)
     }
+}
+
+async function saveQuestionOne(payload) {
+    const data = JSON.parse(payload)
+
+    const record = {
+        user_id: data.user.id,
+        username: data.user.username,
+        question: 'Welcome. How are you doing?',
+        answer: data.actions[0].text.text
+    }
+    console.log(record)
+    
+    const new_record = await UserRepository.persist(record);
+    console.log(new_record)
+
+    axios.post(`${data.response_url}`, {
+        "response_type": "ephemeral",
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "What are your favorite hobbies?"
+                },
+                "accessory": {
+                    "type": "checkboxes",
+                    "options": [
+                        {
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "Football"
+                            },
+                            "value": "value-0"
+                        },
+                        {
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "Music"
+                            },
+                            "value": "value-1"
+                        },
+                        {
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "Movies"
+                            },
+                            "value": "value-2"
+                        },
+                        {
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "Sleep"
+                            },
+                            "value": "value-2"
+                        },
+                        {
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "Basketball"
+                            },
+                            "value": "value-2"
+                        }
+                    ],
+                    "action_id": "checkboxes-action"
+                }
+            }
+        ]
+    });
+}
+
+async function saveQuestionTwo(payload) {
+    const data = JSON.parse(payload)
+    console.log(data)
+    // const data = payload
+    
+    // const record = {
+    //     user_id: data.user.id,
+    //     username: data.user.username,
+    //     question: 'What are your favorite hobbies?',
+    //     answer: data.actions[0].text.text
+    // }
+    // console.log(record)
+    
+    // const new_record = await UserRepository.persist(record);
+    // console.log(new_record)
 }
