@@ -66,6 +66,7 @@ exports.callback = async function(req, res, next) {
         res.status(200).json({
             "blocks": [
                 {
+                    "replace_original": "true",
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
@@ -125,6 +126,7 @@ exports.interact = async function(req, res, next) {
         res.status(200).json({
             "blocks": [
                 {
+                    "replace_original": "true",
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
