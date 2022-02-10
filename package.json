@@ -4,6 +4,7 @@
   "description": "a slack bot api",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "npm run test"
   },
   "author": "Morifeoluwa Jebutu",
