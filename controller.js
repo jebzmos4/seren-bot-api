@@ -66,20 +66,21 @@ exports.messages = async function(req, res, next) {
 exports.callback = async function(req, res, next) {
     try {
         console.log(req.body)
-        if (req.body.payload) {
+        const data = JSON.parse(req.body.payload)
+
+        if (data.actions[0].type == 'button') {
             res.sendStatus(200);
-            await saveQuestionOne(req.body.payload)
+            await saveQuestionOne(data)
         } else {
             res.status(200).send('Thank You!');
-            await saveQuestionTwo(req.body.data)
+            await saveQuestionTwo(data)
         }
     } catch (e) {
         next(e)
     }
 }
 
-async function saveQuestionOne(payload) {
-    const data = JSON.parse(payload)
+async function saveQuestionOne(data) {
 
     const record = {
         user_id: data.user.id,
@@ -150,16 +151,16 @@ async function saveQuestionOne(payload) {
 async function saveQuestionTwo(payload) {
     const data = JSON.parse(payload)
     console.log(data)
-    // const data = payload
+    const data = payload
     
-    // const record = {
-    //     user_id: data.user.id,
-    //     username: data.user.username,
-    //     question: 'What are your favorite hobbies?',
-    //     answer: data.actions[0].text.text
-    // }
-    // console.log(record)
+    const record = {
+        user_id: data.user.id,
+        username: data.user.username,
+        question: 'What are your favorite hobbies?',
+        answer: data.actions[0].text.text
+    }
+    console.log(record)
     
-    // const new_record = await UserRepository.persist(record);
-    // console.log(new_record)
+    const new_record = await UserRepository.persist(record);
+    console.log(new_record)
 }
